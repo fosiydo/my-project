@@ -1,0 +1,47 @@
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="{{ url_for('index') }}" class="logo">Fosi<span>Shop</span></a>
+
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Главная</a></li>
+                    <li><a href="{{ url_for('catalog') }}">Каталог</a></li>
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+                            <li><a href="{{ url_for('admin_dashboard') }}">Админка</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Войти</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                {% if current_user.is_authenticated %}
+                    <!-- Ссылка на личный кабинет (обновленная версия) -->
+                    <a href="{{ url_for('account') }}" class="account-link">
+                        <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="username">{{ current_user.username }}</span>
+                    </a>
+
+                    <!-- Корзина (оставляем как было) -->
+                    <a href="{{ url_for('view_cart') }}" class="cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count">{{ current_user.cart_items_count }}</span>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-outline1">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>

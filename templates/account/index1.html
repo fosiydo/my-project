@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<section class="account-section">
+    <div class="container">
+        <div class="account-header">
+            <h1>Добро пожаловать, {{ current_user.username }}!</h1>
+            <p>Участник с {{ current_user.created_at.strftime('%d.%m.%Y') }}</p>
+        </div>
+
+        <div class="account-actions">
+            <a href="{{ url_for('account_wishlist') }}" class="account-card">
+                <h3>Избранное</h3>
+                <p>{{ current_user.wishlist.count() }} товаров</p>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

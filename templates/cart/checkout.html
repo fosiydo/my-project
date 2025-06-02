@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<section class="cart-section">
+    <div class="container">
+        <h1>Ваша корзина</h1>
+        
+        {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <img src="{{ url_for('static', filename=item.product.image_url) }}" alt="{{ item.product.name }}">
+                </div>
+                
+                <div class="cart-item-details">
+                    <h3>{{ item.product.name }}</h3>
+                    <p class="cart-item-category">{{ item.product.category }}</p>
+                    
+                    <div class="cart-item-price">
+                        <span class="current-price">{{ item.product.price }} ₽</span>
+                        {% if item.product.old_price %}
+                            <span class="old-price">{{ item.product.old_price }} ₽</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="cart-item-quantity">
+                        <form action="{{ url_for('update_cart', product_id=item.product.id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
+                            <span class="quantity">{{ item.quantity }}</span>
+                            <button type="submit" name="action" value="increase" class="quantity-btn">+</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="cart-item-actions">
+                    <form action="{{ url_for('remove_from_cart', item_id=item.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-delete">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cart-summary">
+            <div class="summary-details">
+                <h3>Итого</h3>
+                <div class="summary-row">
+                    <span>Товары ({{ cart_items|sum(attribute='quantity') }})</span>
+                    <span>{{ "%.2f"|format(total_price) }} ₽</span>
+                </div>
+                <div class="summary-row">
+                    <span>Доставка</span>
+                    <span>Бесплатно</span>
+                </div>
+                <div class="summary-row total">
+                    <span>К оплате</span>
+                    <span>{{ "%.2f"|format(total_price) }} ₽</span>
+                </div>
+            </div>
+            
+            <form action="{{ url_for('checkout') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary btn-checkout">Оформить заказ</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="cart-empty">
+            <h2>Ваша корзина пуста</h2>
+            <p>Перейдите в каталог, чтобы добавить товары</p>
+            <a href="{{ url_for('catalog') }}" class="btn btn-primary">В каталог</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

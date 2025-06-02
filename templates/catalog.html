@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог товаров | FosiShop{% endblock %}
+
+{% block content %}
+<section class="catalog-section">
+    <div class="container">
+        <h1>Каталог товаров</h1>
+        
+        <div class="filters">
+            <!-- Здесь можно добавить фильтры по категориям -->
+        </div>
+        
+        <div class="products-grid">
+            {% for product in products %}
+                {% include 'partials/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

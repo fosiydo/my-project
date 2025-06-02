@@ -1,0 +1,44 @@
+<div class="product-card">
+    <div class="product-image">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+            <img src="{{ url_for('static', filename=product.image_url if product.image_url else 'images/products/no-image.png') }}" 
+                 alt="{{ product.name }}">
+        </a>
+        {% if product.badge %}
+            <span class="product-badge" data-badge="{{ product.badge }}">{{ product.badge }}</span>
+        {% endif %}
+    </div>
+    <div class="product-info">
+        <div class="product-category">{{ product.category }}</div>
+        <h3 class="product-title">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a>
+        </h3>
+        <div class="product-price">
+            <span class="current-price">{{ product.price }} ₽</span>
+            {% if product.old_price %}
+                <span class="old-price">{{ product.old_price }} ₽</span>
+            {% endif %}
+        </div>
+        <div class="product-meta">
+            <div class="product-rating">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                {{ product.rating }}
+            </div>
+            <div class="product-actions">
+                <button class="add-to-cart" data-product-id="{{ product.id }}">В корзину</button>
+                {% if current_user.is_authenticated %}
+                <button class="wishlist {% if current_user.wishlist.filter_by(id=product.id).first() %}active{% endif %}" 
+                        data-product-id="{{ product.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
+                         fill="{% if current_user.wishlist.filter_by(id=product.id).first() %}currentColor{% else %}none{% endif %}" 
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

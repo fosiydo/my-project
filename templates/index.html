@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}FosiShop - Лучшая электроника{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Лучшая электроника для вас</h1>
+        <p>Персонализированные рекомендации на основе ваших предпочтений</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('catalog') }}" class="btn btn-primary">Каталог товаров</a>
+            <a href="#" class="btn btn-outline">Узнать больше</a>
+        </div>
+    </div>
+</section>
+
+<section class="personalization-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Персонализируйте свой опыт</h2>
+            <p>Выберите свои интересы, и мы подберем для вас наиболее подходящие товары</p>
+        </div>
+
+        <div class="preference-options">
+            <button class="preference-btn {% if current_category == 'all' %}active{% endif %}" data-category="all">Все категории</button>
+            <button class="preference-btn {% if current_category == 'smartphones' %}active{% endif %}" data-category="smartphones">Смартфоны</button>
+            <button class="preference-btn {% if current_category == 'laptops' %}active{% endif %}" data-category="laptops">Ноутбуки</button>
+            <button class="preference-btn {% if current_category == 'audio' %}active{% endif %}" data-category="audio">Аудио</button>
+            <button class="preference-btn {% if current_category == 'tv' %}active{% endif %}" data-category="tv">Телевизоры</button>
+            <button class="preference-btn {% if current_category == 'gaming' %}active{% endif %}" data-category="gaming">Игровые</button>
+            <button class="preference-btn {% if current_category == 'smart' %}active{% endif %}" data-category="smart">Умный дом</button>
+        </div>
+
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-image">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                        <img src="{{ url_for('static', filename=product.image_url if product.image_url else 'images/no-image.png') }}" 
+                             alt="{{ product.name }}">
+                    </a>
+                    {% if product.badge %}
+                        <span class="product-badge" data-badge="{{ product.badge }}">{{ product.badge }}</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <div class="product-category">{{ product.category }}</div>
+                    <h3 class="product-title">
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a>
+                    </h3>
+                    <div class="product-price">
+                        <span class="current-price">{{ product.price }} ₽</span>
+                        {% if product.old_price %}
+                            <span class="old-price">{{ product.old_price }} ₽</span>
+                        {% endif %}
+                    </div>
+                    <div class="product-meta">
+                        <div class="product-rating">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            {{ product.rating }}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" data-product-id="{{ product.id }}">В корзину</button>
+                            {% if current_user.is_authenticated %}
+                            <button class="wishlist {% if current_user.wishlist.filter_by(id=product.id).first() %}active{% endif %}" 
+                                    data-product-id="{{ product.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
+                                     fill="{% if current_user.wishlist.filter_by(id=product.id).first() %}currentColor{% else %}none{% endif %}" 
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="recommended-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Рекомендуем вам</h2>
+            <p>Товары, которые могут вас заинтересовать</p>
+        </div>
+
+        <div class="products-grid">
+            {% for product in recommended_products %}
+            <div class="product-card">
+                <div class="product-image">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                        <img src="{{ url_for('static', filename=product.image_url) }}" alt="{{ product.name }}">
+                    </a>
+                    {% if product.badge %}
+                        <span class="product-badge" data-badge="{{ product.badge }}">{{ product.badge }}</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <div class="product-category">{{ product.category }}</div>
+                    <h3 class="product-title">
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a>
+                    </h3>
+                    <div class="product-price">
+                        <span class="current-price">{{ product.price }} ₽</span>
+                        {% if product.old_price %}
+                            <span class="old-price">{{ product.old_price }} ₽</span>
+                        {% endif %}
+                    </div>
+                    <div class="product-meta">
+                        <div class="product-rating">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            {{ product.rating }}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" data-product-id="{{ product.id }}">В корзину</button>
+                            {% if current_user.is_authenticated %}
+                            <button class="wishlist {% if current_user.wishlist.filter_by(id=product.id).first() %}active{% endif %}" 
+                                    data-product-id="{{ product.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
+                                     fill="{% if current_user.wishlist.filter_by(id=product.id).first() %}currentColor{% else %}none{% endif %}" 
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Наши преимущества</h2>
+            <p>Почему выбирают FosiShop</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <h3>Широкий ассортимент</h3>
+                <p>Тысячи товаров от ведущих мировых брендов.</p>
+            </div>
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <h3>Быстрая доставка</h3>
+                <p>Доставляем заказы по всей стране в кратчайшие сроки.</p>
+            </div>
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <h3>Профессиональная поддержка</h3>
+                <p>Наши специалисты всегда готовы помочь с выбором.</p>
+            </div>
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <h3>Выгодные цены</h3>
+                <p>Регулярные акции и скидки для наших клиентов.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Отзывы наших клиентов</h2>
+            <p>Что говорят о нас покупатели</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src=static/images/avatar1.jpg alt="Аватар клиента">
+                </div>
+                <div class="testimonial-content">
+                    <p>"Отличный магазин! Быстро нашел нужный товар, доставка порадовала скоростью. Рекомендую!"</p>
+                    <div class="testimonial-author">- Иван П.</div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src=static/images/avatar2.jpg alt="Аватар клиента">
+                </div>
+                <div class="testimonial-content">
+                    <p>"Покупала здесь ноутбук, очень довольна качеством обслуживания и самим товаром. Спасибо!"</p>
+                    <div class="testimonial-author">- Елена К.</div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src=static/images/avatar3.jpg alt="Аватар клиента">
+                </div>
+                <div class="testimonial-content">
+                    <p>"Всегда покупаю электронику в FosiShop. Большой выбор и всегда можно найти что-то по акции."</p>
+                    <div class="testimonial-author">- Дмитрий С.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-content">
+            <h3>Подпишитесь на рассылку</h3>
+            <p>Получайте первыми информацию о новинках, акциях и персональных предложениях</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Введите ваш email" required>
+                <button type="submit" class="btn btn-primary">Подписаться</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

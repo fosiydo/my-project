@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить товар{% endblock %}
+
+{% block content %}
+<section class="admin-section">
+    <div class="container">
+        <h1>Добавить новый товар</h1>
+        
+        <form method="POST" enctype="multipart/form-data" class="product-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="name">Название товара</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Цена</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="old_price">Старая цена (если есть скидка)</label>
+                    <input type="number" id="old_price" name="old_price" step="0.01">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select id="category" name="category" required>
+                        <option value="smartphones">Смартфоны</option>
+                        <option value="laptops">Ноутбуки</option>
+                        <option value="audio">Аудио</option>
+                        <option value="tv">Телевизоры</option>
+                        <option value="gaming">Игровые</option>
+                        <option value="smart">Умный дом</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rating">Рейтинг</label>
+                    <input type="number" id="rating" name="rating" step="0.1" min="0" max="5" value="4.5">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="badge">Бейдж</label>
+                <select id="badge" name="badge">
+                    <option value="">Нет</option>
+                    <option value="Новинка">Новинка</option>
+                    <option value="Акция">Акция</option>
+                    <option value="Хит продаж">Хит продаж</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Изображение товара</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Добавить товар</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
