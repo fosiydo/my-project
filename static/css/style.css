@@ -1279,3 +1279,84 @@ footer {
         height: 48px;
     }
 }
+
+/* Общий стиль для разделов информационных страниц */
+section.about-section,
+section.privacy-section,
+section.shipping-section,
+section.returns-section,
+section.warranty-section,
+section.faq-section {
+    padding: 60px 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: 'Inter', sans-serif;
+    color: #2d3748; /* стиль текста, совпадает с основным сайтом */
+}
+
+/* Заголовки страниц */
+section h1 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Подзаголовки */
+section h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color, #e2e8f0);
+    padding-bottom: 8px;
+}
+
+/* Списки */
+section ul {
+    list-style: disc inside;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+section ul li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Параграфы */
+section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Стиль для выделения важных блоков или информации */
+section .highlight {
+    background-color: #f0f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Адаптивность */
+@media(max-width: 768px) {
+    section {
+        padding: 40px 15px;
+    }
+    section h1 {
+        font-size: 2rem;
+    }
+    section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}

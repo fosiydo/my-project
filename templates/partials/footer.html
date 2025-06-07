@@ -1,31 +1,21 @@
-<footer>
+<!-- templates/footer.html -->
+<footer id="footer">
     <div class="container">
         <div class="footer-content">
             <div class="footer-column">
                 <h4>О нас</h4>
                 <ul>
-                    <li><a href="#">О компании</a></li>
-                    <li><a href="#">Вакансии</a></li>
-                    <li><a href="#">Новости</a></li>
-                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="{{ url_for('about') }}">О компании</a></li>
+                    <li><a href="{{ url_for('privacy') }}">Политика конфиденциальности</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Помощь</h4>
                 <ul>
-                    <li><a href="#">Доставка и оплата</a></li>
-                    <li><a href="#">Возврат и обмен</a></li>
-                    <li><a href="#">Гарантия</a></li>
-                    <li><a href="#">Часто задаваемые вопросы</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Каталог</h4>
-                <ul>
-                    <li><a href="#">Смартфоны</a></li>
-                    <li><a href="#">Ноутбуки</a></li>
-                    <li><a href="#">Аксессуары</a></li>
-                    <li><a href="#">Бытовая техника</a></li>
+                    <li><a href="{{ url_for('shipping') }}">Доставка и оплата</a></li>
+                    <li><a href="{{ url_for('returns') }}">Возврат и обмен</a></li>
+                    <li><a href="{{ url_for('warranty') }}">Гарантия</a></li>
+                    <li><a href="{{ url_for('faq') }}">Часто задаваемые вопросы</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -36,7 +26,7 @@
             </div>
         </div>
         <div class="copyright">
-            &copy; 2025 FosiShop. Все права защищены.
+            &copy; {{ current_year }} FosiShop. Все права защищены.
         </div>
     </div>
 </footer>
